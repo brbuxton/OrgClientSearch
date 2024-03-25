@@ -22,7 +22,7 @@ def search_meraki_clients(api_key, organization_id, mac_address):
 
 def main():
     api_key = os.getenv('MERAKI_DASHBOARD_API_KEY')
-    organization_id = '1492405'  # Replace YOUR_ORGANIZATION_ID with your ID
+    organization_id = 'YOUR_ORGANIZATION_ID'  # Replace YOUR_ORGANIZATION_ID with your ID
 
     mac_address = input("Please enter the client MAC address: ")
 
