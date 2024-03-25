@@ -1,16 +1,38 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import requests
+import os
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def search_meraki_clients(api_key, organization_id, mac_address):
+    url = f"https://api.meraki.com/api/v1/organizations/{organization_id}/clients/search"
+    headers = {
+        'X-Cisco-Meraki-API-Key': api_key,
+        'Content-Type': 'application/json'
+    }
+    params = {
+        'mac': mac_address
+    }
+
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    api_key = os.getenv('MERAKI_DASHBOARD_API_KEY')
+    organization_id = '1492405'  # Replace YOUR_ORGANIZATION_ID with your ID
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    mac_address = input("Please enter the client MAC address: ")
+
+    client_info = search_meraki_clients(api_key, organization_id, mac_address)
+
+    if client_info:
+        print("Client found:", client_info)
+    else:
+        print("Client not found or an error occurred.")
+
+
+if __name__ == "__main__":
+    main()
